@@ -146,37 +146,33 @@ bool GameScene::init() {
 	this->addChild(_foreground, LayerDrawingForeground);
 
 	//Supporters Animations
+	char str[100] = {0};
 	_supporterNonSincro = Animation::create();
-	_supporterNonSincro->addSpriteFrameWithFile(
-			"tonyEsultante/nonSincro/a_01.png");
-	_supporterNonSincro->addSpriteFrameWithFile(
-			"tonyEsultante/nonSincro/a_02.png");
-	_supporterNonSincro->addSpriteFrameWithFile(
-			"tonyEsultante/nonSincro/a_03.png");
-	_supporterNonSincro->addSpriteFrameWithFile(
-			"tonyEsultante/nonSincro/a_04.png");
+	for (int i = 1; i <= 4; i++)
+	{
+		sprintf(str, "tonyEsultante/nonSincro/a_0%d.png", i);
+		_supporterNonSincro->addSpriteFrameWithFile(str);
+	}
 	_supporterNonSincro->setDelayPerUnit(0.15f);
 	_supporterNonSincro->setRestoreOriginalFrame(true);
 	_supporterNonSincro->retain();
 
 	_supporterSincro = Animation::create();
-	_supporterSincro->addSpriteFrameWithFile("tonyEsultante/sincro/A_o1.png");
-	_supporterSincro->addSpriteFrameWithFile("tonyEsultante/sincro/A_02.png");
-	_supporterSincro->addSpriteFrameWithFile("tonyEsultante/sincro/A_03.png");
-	_supporterSincro->addSpriteFrameWithFile("tonyEsultante/sincro/A_04.png");
+	for (int i = 1; i <= 4; i++)
+	{
+		sprintf(str, "tonyEsultante/sincro/A_0%d.png", i);
+		_supporterSincro->addSpriteFrameWithFile(str);
+	}
 	_supporterSincro->setDelayPerUnit(0.08f);
 	_supporterSincro->setRestoreOriginalFrame(true);
 	_supporterSincro->retain();
 
 	_supporterOther = Animation::create();
-	_supporterOther->addSpriteFrameWithFile("tonyEsultante/esultanza/b_01.png");
-	_supporterOther->addSpriteFrameWithFile("tonyEsultante/esultanza/b_02.png");
-	_supporterOther->addSpriteFrameWithFile("tonyEsultante/esultanza/b_03.png");
-	_supporterOther->addSpriteFrameWithFile("tonyEsultante/esultanza/b_04.png");
-	_supporterOther->addSpriteFrameWithFile("tonyEsultante/esultanza/b_05.png");
-	_supporterOther->addSpriteFrameWithFile("tonyEsultante/esultanza/b_06.png");
-	_supporterOther->addSpriteFrameWithFile("tonyEsultante/esultanza/b_07.png");
-	_supporterOther->addSpriteFrameWithFile("tonyEsultante/esultanza/b_08.png");
+	for (int i = 1; i <= 8; i++)
+	{
+		sprintf(str, "tonyEsultante/esultanza/b_0%d.png", i);
+		_supporterOther->addSpriteFrameWithFile(str);
+	}
 	_supporterOther->setDelayPerUnit(0.08f);
 	_supporterOther->setRestoreOriginalFrame(true);
 	_supporterOther->retain();
@@ -395,7 +391,7 @@ Sprite* GameScene::drawSupporter() {
 				RepeatForever::create(Animate::create(_supporterNonSincro)));
 		break;
 	case 2:
-		supporter = Sprite::create("tonyEsultante/sincro/A_o1.png");
+		supporter = Sprite::create("tonyEsultante/sincro/A_01.png");
 		supporter->runAction(
 				RepeatForever::create(Animate::create(_supporterSincro)));
 		break;
@@ -1074,7 +1070,9 @@ void GameScene::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event) {
 					"rootBtnTap.png",
 					CC_CALLBACK_1(GameScene::cancelLeaveGameCallback, this));
 			pCancelItem->setPosition(
-					Point(0,-2 * _scale * pCancelItem->getContentSize().height));
+					Point(0,
+							-2 * _scale
+									* pCancelItem->getContentSize().height));
 			pCancelItem->setScale(_scale);
 
 			//FLY AGAIN label
@@ -1101,7 +1099,7 @@ void GameScene::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event) {
 					Point(0,
 							-3 * _scale * pCancelItem->getContentSize().height
 									- 20));
-			pConfirmItem->setScale(0.8f*_scale);
+			pConfirmItem->setScale(0.8f * _scale);
 
 			Menu* pMenu = Menu::create(pConfirmItem, pCancelItem, NULL);
 

@@ -39,12 +39,12 @@ Scene* FakeSplash::scene()
 bool FakeSplash::init()
 {
     
-    if (!CCLayer::init())
+    if (!Layer::init())
     {
         return false;
     }
     
-    Size screenSize = CCDirector::getInstance()->getWinSize();
+    Size screenSize = Director::getInstance()->getWinSize();
     
     Sprite* bg = Sprite::create("splashScreen.png");
     bg->setScale(Director::getInstance()->getContentScaleFactor());
