@@ -72,7 +72,7 @@ void FakeSplash::showInitialMenu(Node *node)
     node->removeFromParentAndCleanup(true);
     
     Scene* scene = GameScene::scene();
-    CCDirector::getInstance()->replaceScene(scene);
+    Director::getInstance()->replaceScene(scene);
     
 }
 

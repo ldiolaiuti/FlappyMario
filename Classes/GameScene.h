@@ -67,9 +67,9 @@ class GameScene: public Layer{
 	Sprite* drawSupporter();
     
 	// Init
-	void flyTony(Ref * obj);
+	void flyBall(Ref * obj);
 	void showMainMenu();
-	void callbackFlyTony();
+	void callbackFlyBall();
     
 	//New Obstacle
 	void spawnNewObstacle();

@@ -79,7 +79,7 @@ Scene* GameScene::scene() {
 }
 
 bool GameScene::init() {
-	if (!CCLayer::init()) {
+	if (!Layer::init()) {
 		return false;
 	}
 
@@ -130,18 +130,18 @@ bool GameScene::init() {
 	_supportersForeground = new Vector<Ref*>();
 	_logo = new Vector<Ref*>();
 
-	_background = CCNode::create();
-	_background->setContentSize(CCDirector::getInstance()->getVisibleSize());
+	_background = Node::create();
+	_background->setContentSize(Director::getInstance()->getVisibleSize());
 	_background->setAnchorPoint(Point(0, 0));
 	this->addChild(_background, LayerDrawingBackground);
 
-	_midground = CCNode::create();
-	_midground->setContentSize(CCDirector::getInstance()->getVisibleSize());
+	_midground = Node::create();
+	_midground->setContentSize(Director::getInstance()->getVisibleSize());
 	_midground->setAnchorPoint(Point(0, 0));
 	this->addChild(_midground, LayerDrawingMidground);
 
-	_foreground = CCNode::create();
-	_foreground->setContentSize(CCDirector::getInstance()->getVisibleSize());
+	_foreground = Node::create();
+	_foreground->setContentSize(Director::getInstance()->getVisibleSize());
 	_foreground->setAnchorPoint(Point(0, 0));
 	this->addChild(_foreground, LayerDrawingForeground);
 
@@ -208,9 +208,9 @@ void GameScene::showMainMenu() {
 	Label* playLabel = Label::createWithBMFont(s_FontText, "Tap to play");
 	playLabel->setColor(Color3B::YELLOW);
 	MenuItemLabel* play = MenuItemLabel::create(playLabel);
-	play->setCallback(CC_CALLBACK_1(GameScene::flyTony, this));
+	play->setCallback(CC_CALLBACK_1(GameScene::flyBall, this));
 
-	Menu* menu = CCMenu::create(play, NULL);
+	Menu* menu = Menu::create(play, NULL);
 	menu->setScale(0.7 * _scale);
 	menu->setAnchorPoint(Point::ZERO);
 	menu->setPosition(
@@ -238,7 +238,7 @@ void GameScene::onEnter() {
 
 }
 
-void GameScene::flyTony(Ref *obj) {
+void GameScene::flyBall(Ref *obj) {
 	int idSound = (rand() % 4) + 1;
 	ostringstream idSoundString;
 	idSoundString << "Suoni/play/play_0" << idSound << ".mp3";
@@ -260,10 +260,10 @@ void GameScene::flyTony(Ref *obj) {
 		}
 	}
 
-	this->callbackFlyTony();
+	this->callbackFlyBall();
 }
 
-void GameScene::callbackFlyTony() {
+void GameScene::callbackFlyBall() {
 	_ball->setVisible(true);
 	_label->setVisible(true);
 	_layerColorWait->setVisible(false);
@@ -272,7 +272,7 @@ void GameScene::callbackFlyTony() {
 }
 
 void GameScene::onExit() {
-	CCLayer::onExit();
+	Layer::onExit();
 	Director::getInstance()->getEventDispatcher()->removeAllEventListeners();
 }
 
@@ -777,7 +777,7 @@ void GameScene::gameOver() {
 					this->getPositionY() - offset));
 
 	this->runAction(
-			CCSequence::create(moveUpL, moveUpR, moveDownR, moveDownL,
+			Sequence::create(moveUpL, moveUpR, moveDownR, moveDownL,
 					moveDownR, moveUpL, moveDownL, moveUpR, moveUpL, moveUpR,
 					moveDownR, moveDownL, moveDownR, moveUpL, moveDownL,
 					moveUpR, moveDownR, moveDownL, moveDownR, moveUpL,
@@ -869,7 +869,7 @@ void GameScene::callbackRestart() {
 	this->resetGameAttribute();
 
 	this->runAction(
-			CCSequence::createWithTwoActions(DelayTime::create(0.8),
+			Sequence::createWithTwoActions(DelayTime::create(0.8),
 					CallFunc::create(
 							CC_CALLBACK_0(GameScene::resetScene, this))));
 }
@@ -980,17 +980,13 @@ void GameScene::updateScoreLabel() {
 		}
 	}
 
-	if (_score
-			> atoi(
-					CCUserDefault::getInstance()->getStringForKey(
-							"currentScore", "").c_str())) {
+	if (_score > atoi(UserDefault::getInstance()->getStringForKey("currentScore", "").c_str())) {
 //		showNewRecordLabel();
 
 		ostringstream score;
 		score << _score;
-		CCUserDefault::getInstance()->setStringForKey("currentScore",
-				score.str().c_str());
-		CCUserDefault::getInstance()->flush();
+		UserDefault::getInstance()->setStringForKey("currentScore", score.str().c_str());
+		UserDefault::getInstance()->flush();
 	}
 
 	ostringstream score;
