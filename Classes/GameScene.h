@@ -19,18 +19,19 @@ class GameScene: public Layer{
 	enum class GameState{
 		MAINMENU,
 		RUNNING,
-		ENDMENU
+		ENDMENU,
+		BACKMENU
 	};
     
 	GameState _state;
     
 	Size _screenSize;
 	Node * _background;
-	Node * _midground;
 	Node * _foreground;
 	Sprite * _ball;
 	Label* _label;
-	LayerColor* _layerColorWait;
+	LayerColor* _mainMenuLayer=NULL;
+	LayerColor* _endMenuLayer=NULL;
 	LayerColor* _backKeyLayer=NULL;
     
 	int _score;
@@ -65,10 +66,14 @@ class GameScene: public Layer{
 	void drawScoreLabel();
 	void drawPlayer();
 	Sprite* drawSupporter();
+
+	//Menu Layer
+	void showExitMenu();
+	void showMainMenu();
+	void showEndMenu(int score);
     
 	// Init
 	void flyBall(Ref * obj);
-	void showMainMenu();
 	void callbackFlyBall();
     
 	//New Obstacle

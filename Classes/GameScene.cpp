@@ -51,6 +51,8 @@ typedef enum {
 
 } DrawingOrder;
 
+#pragma mark Create
+
 GameScene::GameScene() {
 
 }
@@ -130,26 +132,22 @@ bool GameScene::init() {
 	_supportersForeground = new Vector<Ref*>();
 	_logo = new Vector<Ref*>();
 
+	//background
 	_background = Node::create();
 	_background->setContentSize(Director::getInstance()->getVisibleSize());
 	_background->setAnchorPoint(Point(0, 0));
 	this->addChild(_background, LayerDrawingBackground);
 
-	_midground = Node::create();
-	_midground->setContentSize(Director::getInstance()->getVisibleSize());
-	_midground->setAnchorPoint(Point(0, 0));
-	this->addChild(_midground, LayerDrawingMidground);
-
+	//foreground for menu
 	_foreground = Node::create();
 	_foreground->setContentSize(Director::getInstance()->getVisibleSize());
 	_foreground->setAnchorPoint(Point(0, 0));
 	this->addChild(_foreground, LayerDrawingForeground);
 
 	//Supporters Animations
-	char str[100] = {0};
+	char str[100] = { 0 };
 	_supporterNonSincro = Animation::create();
-	for (int i = 1; i <= 4; i++)
-	{
+	for (int i = 1; i <= 4; i++) {
 		sprintf(str, "tonyEsultante/nonSincro/a_0%d.png", i);
 		_supporterNonSincro->addSpriteFrameWithFile(str);
 	}
@@ -158,8 +156,7 @@ bool GameScene::init() {
 	_supporterNonSincro->retain();
 
 	_supporterSincro = Animation::create();
-	for (int i = 1; i <= 4; i++)
-	{
+	for (int i = 1; i <= 4; i++) {
 		sprintf(str, "tonyEsultante/sincro/A_0%d.png", i);
 		_supporterSincro->addSpriteFrameWithFile(str);
 	}
@@ -168,8 +165,7 @@ bool GameScene::init() {
 	_supporterSincro->retain();
 
 	_supporterOther = Animation::create();
-	for (int i = 1; i <= 8; i++)
-	{
+	for (int i = 1; i <= 8; i++) {
 		sprintf(str, "tonyEsultante/esultanza/b_0%d.png", i);
 		_supporterOther->addSpriteFrameWithFile(str);
 	}
@@ -177,50 +173,10 @@ bool GameScene::init() {
 	_supporterOther->setRestoreOriginalFrame(true);
 	_supporterOther->retain();
 
-	_layerColorWait = LayerColor::create(Color4B(9, 13, 73, 0),
-			_screenSize.width, _screenSize.height);
-	_layerColorWait->setAnchorPoint(Point(0, 0));
-	this->addChild(_layerColorWait, LayerDrawingForeground + 1);
-
 	this->showMainMenu();
 	this->drawLayout();
 
 	return true;
-}
-
-void GameScene::showMainMenu() {
-	_layerColorWait->removeAllChildrenWithCleanup(true);
-	Sprite *logo = Sprite::create("logo.png");
-	logo->setScale(_scale);
-	logo->setAnchorPoint(Point(0.5, 0.5));
-	logo->setPosition(
-			Point(_layerColorWait->getContentSize().width / 2,
-					_layerColorWait->getContentSize().height / 2));
-	_layerColorWait->addChild(logo);
-	Sprite* ball = Sprite::create("palla.png");
-	ball->setScale(_scale);
-	ball->setAnchorPoint(Point(0.5, 0.5));
-	ball->setPosition(
-			Point(_layerColorWait->getContentSize().width * 0.25,
-					_layerColorWait->getContentSize().height * 0.75));
-	_layerColorWait->addChild(ball);
-
-	Label* playLabel = Label::createWithBMFont(s_FontText, "Tap to play");
-	playLabel->setColor(Color3B::YELLOW);
-	MenuItemLabel* play = MenuItemLabel::create(playLabel);
-	play->setCallback(CC_CALLBACK_1(GameScene::flyBall, this));
-
-	Menu* menu = Menu::create(play, NULL);
-	menu->setScale(0.7 * _scale);
-	menu->setAnchorPoint(Point::ZERO);
-	menu->setPosition(
-			Point(_layerColorWait->getContentSize().width / 2,
-					_layerColorWait->getContentSize().height / 4));
-
-	_layerColorWait->addChild(menu);
-
-	//--Set game state--
-	_state = GameState::MAINMENU;
 }
 
 void GameScene::onEnter() {
@@ -238,43 +194,171 @@ void GameScene::onEnter() {
 
 }
 
-void GameScene::flyBall(Ref *obj) {
-	int idSound = (rand() % 4) + 1;
-	ostringstream idSoundString;
-	idSoundString << "Suoni/play/play_0" << idSound << ".mp3";
-	SimpleAudioEngine::getInstance()->preloadEffect(
-			idSoundString.str().c_str());
-	SimpleAudioEngine::getInstance()->playEffect(idSoundString.str().c_str());
-
-	//--Set game state
-	_state = GameState::RUNNING;
-
-	MenuItemSprite* btn = (MenuItemSprite*) obj;
-	Vector<Node*> btnChildren = btn->getChildren();
-	for (Vector<Node*>::iterator it = btnChildren.begin();
-			it < btnChildren.end(); it++) {
-		Label* node = dynamic_cast<Label *>(*it);
-
-		if (node != NULL) {
-			node->setVisible(false);
-		}
-	}
-
-	this->callbackFlyBall();
-}
-
-void GameScene::callbackFlyBall() {
-	_ball->setVisible(true);
-	_label->setVisible(true);
-	_layerColorWait->setVisible(false);
-
-	this->scheduleUpdate();
-}
-
 void GameScene::onExit() {
 	Layer::onExit();
 	Director::getInstance()->getEventDispatcher()->removeAllEventListeners();
 }
+
+#pragma mark Menu
+
+void GameScene::showMainMenu() {
+	if (_mainMenuLayer == NULL) {
+
+		_mainMenuLayer = LayerColor::create(Color4B(9, 13, 73, 0),
+				_screenSize.width, _screenSize.height);
+		_mainMenuLayer->setAnchorPoint(Point(0, 0));
+		this->addChild(_mainMenuLayer, LayerDrawingForeground + 1);
+		Sprite *logo = Sprite::create("logo.png");
+		logo->setScale(_scale);
+		logo->setAnchorPoint(Point(0.5, 0.5));
+		logo->setPosition(
+				Point(_mainMenuLayer->getContentSize().width / 2,
+						_mainMenuLayer->getContentSize().height / 2));
+		_mainMenuLayer->addChild(logo);
+		Sprite* ball = Sprite::create("palla.png");
+		ball->setScale(_scale);
+		ball->setAnchorPoint(Point(0.5, 0.5));
+		ball->setPosition(
+				Point(_mainMenuLayer->getContentSize().width * 0.25,
+						_mainMenuLayer->getContentSize().height * 0.75));
+		_mainMenuLayer->addChild(ball);
+
+		Label* playLabel = Label::createWithBMFont(s_FontText, "Tap to play");
+		playLabel->setColor(Color3B::YELLOW);
+		MenuItemLabel* play = MenuItemLabel::create(playLabel);
+		play->setCallback(CC_CALLBACK_1(GameScene::flyBall, this));
+
+		Menu* menu = Menu::create(play, NULL);
+		menu->setScale(0.7 * _scale);
+		menu->setAnchorPoint(Point::ZERO);
+		menu->setPosition(
+				Point(_mainMenuLayer->getContentSize().width / 2,
+						_mainMenuLayer->getContentSize().height / 4));
+
+		_mainMenuLayer->addChild(menu);
+	}
+
+	_mainMenuLayer->setVisible(true);
+
+	//--Set game state--
+	_state = GameState::MAINMENU;
+}
+
+void GameScene::showExitMenu() {
+	if (_backKeyLayer == NULL) {
+		_backKeyLayer = LayerColor::create(Color4B(9, 13, 73, 102),
+				_screenSize.width, _screenSize.height);
+		_backKeyLayer->setPosition(Point::ZERO);
+		_backKeyLayer->setOpacity(0);
+
+		//--CANCEL BUTTON--
+		auto pCancelItem = MenuItemImage::create("rootBtn.png",
+				"rootBtnTap.png",
+				CC_CALLBACK_1(GameScene::cancelLeaveGameCallback, this));
+		pCancelItem->setPosition(
+				Point(0, -2 * _scale * pCancelItem->getContentSize().height));
+		pCancelItem->setScale(_scale);
+
+		//FLY AGAIN label
+		auto label = Label::createWithBMFont(s_FontText, "Play Again!");
+		label->setScale(0.7);
+		label->setPosition(
+				Point(pCancelItem->getContentSize().width / 2,
+						pCancelItem->getContentSize().height / 2));
+		pCancelItem->addChild(label);
+
+		//--CONFIRM BUTTON--
+		auto pConfirmItem = MenuItemImage::create("rootBtn.png",
+				"rootBtnTap.png",
+				CC_CALLBACK_1(GameScene::confirmLeaveGameCallback,this));
+
+		//YES, PLEASE BUTTON
+		label = Label::createWithBMFont(s_FontText, "Please Exit");
+		label->setScale(0.6);
+		label->setPosition(
+				Point(pConfirmItem->getContentSize().width / 2,
+						pConfirmItem->getContentSize().height / 2));
+		pConfirmItem->addChild(label);
+		pConfirmItem->setPosition(
+				Point(0,
+						-3 * _scale * pCancelItem->getContentSize().height
+								- 20));
+		pConfirmItem->setScale(0.8f * _scale);
+
+		Menu* pMenu = Menu::create(pConfirmItem, pCancelItem, NULL);
+
+		//Really quit Fly Tony?
+		label = Label::createWithBMFont(s_FontText,
+				"\tReally quit\nFlappy Balo?");
+
+		auto menuLabel = MenuItemLabel::create(label, [&](Ref* sender) {});
+		menuLabel->setScale(0.7 * _scale);
+		menuLabel->setPosition(Point(0, label->getContentSize().height / 2));
+
+		pMenu->addChild(menuLabel);
+
+		_backKeyLayer->addChild(pMenu);
+
+		this->addChild(_backKeyLayer, 100);
+	}
+
+	_backKeyLayer->setVisible(true);
+}
+
+void GameScene::showEndMenu(int score) {
+	if (_endMenuLayer == NULL) {
+		_endMenuLayer = LayerColor::create(Color4B(9, 13, 73, 0),
+				_screenSize.width, _screenSize.height);
+		_endMenuLayer->setAnchorPoint(Point(0, 0));
+		this->addChild(_endMenuLayer, LayerDrawingForeground + 2);
+
+		Sprite* balo = Sprite::create("PoseMario/baloBusto.png");
+		balo->setScale(_scale);
+		balo->setAnchorPoint(Point(0.5, 0));
+		balo->setPosition(
+				Point(_endMenuLayer->getContentSize().width / 2, 164));
+		_endMenuLayer->addChild(balo);
+		Sprite* bocca = Sprite::create("PoseMario/bocca_01.png");
+		bocca->setAnchorPoint(Point(0, 0));
+		bocca->setPosition(Point::ZERO);
+		balo->addChild(bocca);
+
+		//Restart Button
+		MenuItemImage* restartItem = MenuItemImage::create("rootBtn.png",
+				"rootBtnTap.png", CC_CALLBACK_1(GameScene::restart,this));
+		restartItem->setAnchorPoint(Point(0.5, 0));
+		restartItem->setScale(_scale);
+
+		restartItem->setPosition(Point(0, -246));
+
+		Label* label = Label::createWithBMFont(s_FontText, "restart");
+		label->setScale(0.6);
+		label->setPosition(
+				Point(restartItem->getContentSize().width / 2,
+						restartItem->getContentSize().height / 2));
+		restartItem->addChild(label);
+
+		Menu* pMenu = Menu::create(restartItem, NULL);
+		_endMenuLayer->addChild(pMenu);
+	}
+
+	_endMenuLayer->removeChildByTag(15, true);
+
+	//Score Label
+	ostringstream scoreStr;
+	scoreStr << score;
+	Label* scoreLabel = Label::createWithBMFont(s_FontText, scoreStr.str());
+	scoreLabel->setScale(_scale);
+	scoreLabel->setAnchorPoint(Point(0.5, 0));
+	scoreLabel->setPosition(
+			Point(_endMenuLayer->getContentSize().width / 2, 560));
+	scoreLabel->setTag(15);
+	_endMenuLayer->addChild(scoreLabel);
+
+	_endMenuLayer->setVisible(true);
+}
+
+#pragma mark DrawLayout
 
 void GameScene::drawLayout() {
 	this->drawBackground();
@@ -298,33 +382,25 @@ void GameScene::drawBackground() {
 	//supporters
 	x = -100;
 	int y = 492;
-	while (x < _screenSize.width) {
-		Sprite* supporter = drawSupporter();
-		supporter->setPosition(Point(x, y));
-		supporter->setAnchorPoint(Point::ZERO);
-		_foreground->addChild(supporter, DrawingOrderSupporters1);
-		x += 62;
-		_supporters1->pushBack(supporter);
-	}
-	x = -70;
-	y += 35;
-	while (x < _screenSize.width + 30) {
-		Sprite* supporter = drawSupporter();
-		supporter->setPosition(Point(x, y));
-		supporter->setAnchorPoint(Point::ZERO);
-		_foreground->addChild(supporter, DrawingOrderSupporters2);
-		x += 62;
-		_supporters2->pushBack(supporter);
-	}
-	x = -100;
-	y += 35;
-	while (x < _screenSize.width) {
-		Sprite* supporter = drawSupporter();
-		supporter->setPosition(Point(x, y));
-		supporter->setAnchorPoint(Point::ZERO);
-		_foreground->addChild(supporter, DrawingOrderSupporters3);
-		x += 62;
-		_supporters3->pushBack(supporter);
+	for (int i = 0; i < 3; i++) {
+		while (x < _screenSize.width) {
+			Sprite* supporter = drawSupporter();
+			supporter->setPosition(Point(x, y));
+			supporter->setAnchorPoint(Point::ZERO);
+			x += 62;
+			if (i == 0) {
+				_background->addChild(supporter, DrawingOrderSupporters1);
+				_supporters1->pushBack(supporter);
+			} else if (i == 1) {
+				_background->addChild(supporter, DrawingOrderSupporters2);
+				_supporters2->pushBack(supporter);
+			} else if (i == 2) {
+				_background->addChild(supporter, DrawingOrderSupporters3);
+				_supporters3->pushBack(supporter);
+			}
+		}
+		y += 35;
+		x = -100 + 30 * (-1) ^ i;
 	}
 	x = -100;
 	y = 500;
@@ -335,7 +411,7 @@ void GameScene::drawBackground() {
 		supporterForeground->setOpacity(120);
 		supporterForeground->setPosition(Point(x, y));
 		supporterForeground->setAnchorPoint(Point::ZERO);
-		_foreground->addChild(supporterForeground,
+		_background->addChild(supporterForeground,
 				DrawingOrderSupportersForeground);
 		x += supporterForeground->getContentSize().width;
 		_supportersForeground->pushBack(supporterForeground);
@@ -383,7 +459,6 @@ void GameScene::drawPlayer() {
 Sprite* GameScene::drawSupporter() {
 	Sprite* supporter;
 	int random = rand() % 3 + 1;
-	//int random = 3;
 	switch (random) {
 	case 1:
 		supporter = Sprite::create("tonyEsultante/nonSincro/a_01.png");
@@ -405,24 +480,42 @@ Sprite* GameScene::drawSupporter() {
 	return supporter;
 }
 
-// Update
+#pragma mark Update
+
+void GameScene::flyBall(Ref *obj) {
+	int idSound = (rand() % 4) + 1;
+	ostringstream idSoundString;
+	idSoundString << "Suoni/play/play_0" << idSound << ".mp3";
+	SimpleAudioEngine::getInstance()->preloadEffect(
+			idSoundString.str().c_str());
+	SimpleAudioEngine::getInstance()->playEffect(idSoundString.str().c_str());
+
+	//--Set game state
+	_state = GameState::RUNNING;
+
+	this->callbackFlyBall();
+}
+
+void GameScene::callbackFlyBall() {
+	_ball->setVisible(true);
+	_label->setVisible(true);
+	_mainMenuLayer->setVisible(false);
+
+	this->scheduleUpdate();
+}
 
 void GameScene::update(float dt) {
+	//Scrolling
 	_background->setPosition(
 			Point(
 					_background->getPositionX()
 							- (_scrollSpeedBackground * FIXED_TIME_STEP),
 					_background->getPositionY()));
-	_midground->setPosition(
-			Point(
-					_midground->getPositionX()
-							- (_scrollSpeedMidGround * FIXED_TIME_STEP),
-					_midground->getPositionY()));
 	_foreground->setPosition(
 			Point(
-					_background->getPositionX()
+					_foreground->getPositionX()
 							- (_scrollSpeedForeground * FIXED_TIME_STEP),
-					_background->getPositionY()));
+							_foreground->getPositionY()));
 
 	if (_isTap) {
 		_rotation = -40;
@@ -434,7 +527,6 @@ void GameScene::update(float dt) {
 
 	if (_yVel >= FORCE_Y) {
 		_yVel = FORCE_Y;
-
 	} else if (_yVel <= 2 * -GRAVITY) {
 		_yVel = 2 * -GRAVITY;
 	}
@@ -462,27 +554,18 @@ void GameScene::update(float dt) {
 		_rotation += 1;
 
 	// Grounds Movement
-	for (Vector<Ref*>::iterator it = _grounds->begin(); it < _grounds->end();
-			it++) {
+	for (Vector<Ref*>::iterator it = _grounds->begin(); it < _grounds->end(); it++) {
 		Sprite* ground = (Sprite*) *it;
 
 		// get the world position of the ground
-		Point groundWorldPosition = _background->convertToWorldSpace(
-				ground->getPosition());
+		Point groundWorldPosition = _background->convertToWorldSpace(ground->getPosition());
 
 		// get the screen position of the ground
-		Point groundScreenPosition = this->convertToNodeSpace(
-				groundWorldPosition);
+		Point groundScreenPosition = this->convertToNodeSpace(groundWorldPosition);
 
 		// if the left corner is one complete width off the screen, move it to the right
-		if (groundScreenPosition.x
-				<= (-1 * ground->getContentSize().width * _scale)) {
-			ground->setPosition(
-					Point(
-							ground->getPositionX()
-									+ 4 * _scale
-											* ground->getContentSize().width,
-							ground->getPositionY()));
+		if (groundScreenPosition.x <= (-1 * ground->getContentSize().width * _scale)) {
+			ground->setPosition(Point(ground->getPositionX() + 4 * _scale * ground->getContentSize().width, ground->getPositionY()));
 		}
 
 	}
@@ -493,7 +576,7 @@ void GameScene::update(float dt) {
 		Sprite* supporter = (Sprite*) *it;
 
 		// get the world position of the supporter
-		Point supporterWorldPosition = _foreground->convertToWorldSpace(
+		Point supporterWorldPosition = _background->convertToWorldSpace(
 				supporter->getPosition());
 
 		// get the screen position of the supporter
@@ -514,7 +597,7 @@ void GameScene::update(float dt) {
 		Sprite* supporter = (Sprite*) *it;
 
 		// get the world position of the supporter
-		Point supporterWorldPosition = _foreground->convertToWorldSpace(
+		Point supporterWorldPosition = _background->convertToWorldSpace(
 				supporter->getPosition());
 
 		// get the screen position of the supporter
@@ -535,7 +618,7 @@ void GameScene::update(float dt) {
 		Sprite* supporter = (Sprite*) *it;
 
 		// get the world position of the supporter
-		Point supporterWorldPosition = _foreground->convertToWorldSpace(
+		Point supporterWorldPosition = _background->convertToWorldSpace(
 				supporter->getPosition());
 
 		// get the screen position of the supporter
@@ -556,7 +639,7 @@ void GameScene::update(float dt) {
 		Sprite* supporter = (Sprite*) *it;
 
 		// get the world position of the supporter
-		Point supporterWorldPosition = _foreground->convertToWorldSpace(
+		Point supporterWorldPosition = _background->convertToWorldSpace(
 				supporter->getPosition());
 
 		// get the screen position of the supporter
@@ -580,7 +663,7 @@ void GameScene::update(float dt) {
 		Sprite* logo = (Sprite*) *it;
 
 		// get the world position of the supporter
-		Point logoWorldPosition = _foreground->convertToWorldSpace(
+		Point logoWorldPosition = _background->convertToWorldSpace(
 				logo->getPosition());
 
 		// get the screen position of the supporter
@@ -642,8 +725,7 @@ void GameScene::spawnNewObstacle() {
 		previousObstacleXPosition = previousObstacle->getPositionX();
 	}
 
-	Point position = Point(previousObstacleXPosition + distanceBetweenObstacles,
-			0);
+	Point position = Point(previousObstacleXPosition + distanceBetweenObstacles, 0);
 
 	Obstacle* obstacle = Obstacle::create();
 	obstacle->setPosition(position);
@@ -777,15 +859,14 @@ void GameScene::gameOver() {
 					this->getPositionY() - offset));
 
 	this->runAction(
-			Sequence::create(moveUpL, moveUpR, moveDownR, moveDownL,
-					moveDownR, moveUpL, moveDownL, moveUpR, moveUpL, moveUpR,
+			Sequence::create(moveUpL, moveUpR, moveDownR, moveDownL, moveDownR,
+					moveUpL, moveDownL, moveUpR, moveUpL, moveUpR, moveDownR,
+					moveDownL, moveDownR, moveUpL, moveDownL, moveUpR,
 					moveDownR, moveDownL, moveDownR, moveUpL, moveDownL,
-					moveUpR, moveDownR, moveDownL, moveDownR, moveUpL,
-					moveDownL, moveUpR, Place::create(initialPosition),
+					moveUpR, Place::create(initialPosition),
 					CallFunc::create(
 							CC_CALLBACK_0(GameScene::callbackGameOver, this)),
 					NULL));
-
 }
 
 void GameScene::callbackGameOver() {
@@ -807,46 +888,7 @@ void GameScene::callbackGameOver() {
 
 	_ball->setVisible(false);
 
-	_layerColorWait->removeAllChildrenWithCleanup(true);
-	_layerColorWait->setVisible(true);
-
-	Sprite* balo = Sprite::create("PoseMario/baloBusto.png");
-	balo->setScale(_scale);
-	balo->setAnchorPoint(Point(0.5, 0));
-	balo->setPosition(Point(_layerColorWait->getContentSize().width / 2, 164));
-	_layerColorWait->addChild(balo);
-	Sprite* bocca = Sprite::create("PoseMario/bocca_01.png");
-	bocca->setAnchorPoint(Point(0, 0));
-	bocca->setPosition(Point::ZERO);
-	balo->addChild(bocca);
-
-	//Score Label
-	ostringstream scoreStr;
-	scoreStr << _score;
-	Label* score = Label::createWithBMFont(s_FontText, scoreStr.str());
-	score->setScale(_scale);
-	score->setAnchorPoint(Point(0.5, 0));
-	score->setPosition(Point(_layerColorWait->getContentSize().width / 2, 560));
-	_layerColorWait->addChild(score);
-
-	//Restart Button
-	MenuItemImage* restartItem = MenuItemImage::create("rootBtn.png",
-			"rootBtnTap.png", CC_CALLBACK_1(GameScene::restart,this));
-	restartItem->setAnchorPoint(Point(0.5, 0));
-	restartItem->setScale(_scale);
-
-	restartItem->setPosition(Point(0, -246));
-
-	Label* label = Label::createWithBMFont(s_FontText, "restart");
-	label->setScale(0.6);
-	label->setPosition(
-			Point(restartItem->getContentSize().width / 2,
-					restartItem->getContentSize().height / 2));
-	restartItem->addChild(label);
-
-	Menu* pMenu = Menu::create(restartItem, NULL);
-
-	_layerColorWait->addChild(pMenu);
+	this->showEndMenu(_score);
 }
 
 void GameScene::restart(Ref *obj) {
@@ -856,7 +898,6 @@ void GameScene::restart(Ref *obj) {
 	SimpleAudioEngine::getInstance()->preloadEffect(
 			idSoundString.str().c_str());
 	SimpleAudioEngine::getInstance()->playEffect(idSoundString.str().c_str());
-	_layerColorWait->removeAllChildrenWithCleanup(true);
 	this->callbackRestart();
 
 	//--FLURRY EVENT--
@@ -884,11 +925,9 @@ void GameScene::resetGameAttribute() {
 	_idSoundNewGroupScore = 10;
 	_label->setVisible(true);
 
-	_layerColorWait->removeAllChildrenWithCleanup(true);
-	_layerColorWait->setVisible(false);
+	_endMenuLayer->setVisible(false);
 	_background->setPosition(Point::ZERO);
 
-	_midground->setPosition(Point::ZERO);
 	_foreground->setPosition(Point::ZERO);
 
 	int x = 0;
@@ -980,12 +1019,16 @@ void GameScene::updateScoreLabel() {
 		}
 	}
 
-	if (_score > atoi(UserDefault::getInstance()->getStringForKey("currentScore", "").c_str())) {
+	if (_score
+			> atoi(
+					UserDefault::getInstance()->getStringForKey("currentScore",
+							"").c_str())) {
 //		showNewRecordLabel();
 
 		ostringstream score;
 		score << _score;
-		UserDefault::getInstance()->setStringForKey("currentScore", score.str().c_str());
+		UserDefault::getInstance()->setStringForKey("currentScore",
+				score.str().c_str());
 		UserDefault::getInstance()->flush();
 	}
 
@@ -1042,11 +1085,7 @@ void GameScene::bannerPressed(Ref *obj) {
 void GameScene::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event) {
 	if (keyCode == EventKeyboard::KeyCode::KEY_ESCAPE) {
 		if (_state == GameState::MAINMENU) {
-			if (_backKeyLayer) {
-				_backKeyLayer->removeFromParentAndCleanup(true);
-				_backKeyLayer = NULL;
-				return;
-			}
+			this->showExitMenu();
 
 			int idSound = (rand() % 8) + 1;
 			ostringstream idSoundString;
@@ -1056,72 +1095,18 @@ void GameScene::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event) {
 			SimpleAudioEngine::getInstance()->playEffect(
 					idSoundString.str().c_str());
 
-			_backKeyLayer = LayerColor::create(Color4B(9, 13, 73, 102),
-					_screenSize.width, _screenSize.height);
-			_backKeyLayer->setPosition(Point::ZERO);
-			_backKeyLayer->setOpacity(0);
-
-			//--CANCEL BUTTON--
-			auto pCancelItem = MenuItemImage::create("rootBtn.png",
-					"rootBtnTap.png",
-					CC_CALLBACK_1(GameScene::cancelLeaveGameCallback, this));
-			pCancelItem->setPosition(
-					Point(0,
-							-2 * _scale
-									* pCancelItem->getContentSize().height));
-			pCancelItem->setScale(_scale);
-
-			//FLY AGAIN label
-			auto label = Label::createWithBMFont(s_FontText, "Play Again!");
-			label->setScale(0.7);
-			label->setPosition(
-					Point(pCancelItem->getContentSize().width / 2,
-							pCancelItem->getContentSize().height / 2));
-			pCancelItem->addChild(label);
-
-			//--CONFIRM BUTTON--
-			auto pConfirmItem = MenuItemImage::create("rootBtn.png",
-					"rootBtnTap.png",
-					CC_CALLBACK_1(GameScene::confirmLeaveGameCallback,this));
-
-			//YES, PLEASE BUTTON
-			label = Label::createWithBMFont(s_FontText, "Please Exit");
-			label->setScale(0.6);
-			label->setPosition(
-					Point(pConfirmItem->getContentSize().width / 2,
-							pConfirmItem->getContentSize().height / 2));
-			pConfirmItem->addChild(label);
-			pConfirmItem->setPosition(
-					Point(0,
-							-3 * _scale * pCancelItem->getContentSize().height
-									- 20));
-			pConfirmItem->setScale(0.8f * _scale);
-
-			Menu* pMenu = Menu::create(pConfirmItem, pCancelItem, NULL);
-
-			//Really quit Fly Tony?
-			label = Label::createWithBMFont(s_FontText,
-					"\tReally quit\nFlappy Balo?");
-
-			auto menuLabel = MenuItemLabel::create(label, [&](Ref* sender) {});
-			menuLabel->setScale(0.7 * _scale);
-			menuLabel->setPosition(
-					Point(0, label->getContentSize().height / 2));
-
-			pMenu->addChild(menuLabel);
-
-			_backKeyLayer->addChild(pMenu);
-
-			this->addChild(_backKeyLayer, 100);
+			_state = GameState::BACKMENU;
 
 			_backKeyLayer->runAction(FadeTo::create(0.2, 200));
 		} else if (_state == GameState::ENDMENU) {
 			this->resetGameAttribute();
 			this->updateScoreLabel();
-			_layerColorWait->setVisible(true);
+			this->showMainMenu();
 			_ball->setVisible(false);
 			_label->setVisible(false);
-			this->showMainMenu();
+		} else if (_state == GameState::BACKMENU) {
+			_backKeyLayer->setVisible(false);
+			_state = GameState::MAINMENU;
 		}
 	}
 }

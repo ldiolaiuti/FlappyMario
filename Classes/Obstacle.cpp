@@ -125,35 +125,24 @@ void Obstacle::setupRandomPosition() {
 
 }
 
-CollisionType Obstacle::checkCollisionWithPlayer(Sprite *sprite,
-		const Point& point) {
-	CollisionType type = CollisionTypeNone;
-
-	int distance = radius * sprite->getScale();
-
-	Rect bottomPipeRect = Rect(point.x, point.y,
-			70,
-			_bottomBalo->getPositionY());
-
-	Rect topPipeRect = Rect(point.x, _topBalo->getPositionY(),
-			70, _screenSize.height);
-
-
+CollisionType Obstacle::checkCollisionWithPlayer(Sprite *sprite, const Point& point) {
+	Rect bottomBaloRect = Rect(point.x, point.y, 70, _bottomBalo->getPositionY());
+	Rect topBaloRect = Rect(point.x, _topBalo->getPositionY(), 70, _screenSize.height);
 	Rect goalRect = Rect(point.x, point.y, _goal->getContentSize().width,
 			VisibleRect::getVisibleRect().size.height);
 
-
-	Rect spriteBoundingBox = Rect(
+	Rect ballBoundingBox = Rect(
 			sprite->getPositionX() - sprite->getContentSize().width / 4,
 			sprite->getPositionY() - sprite->getContentSize().height / 4,
 			sprite->getContentSize().width / 2 * sprite->getScale(),
 			sprite->getContentSize().height / 2 * sprite->getScale());
 
-	if (bottomPipeRect.intersectsRect(spriteBoundingBox)) {
+	CollisionType type = CollisionTypeNone;
+	if (bottomBaloRect.intersectsRect(ballBoundingBox)) {
 		type = CollisionTypePipe;
-	} else if (topPipeRect.intersectsRect(spriteBoundingBox)) {
+	} else if (topBaloRect.intersectsRect(ballBoundingBox)) {
 		type = CollisionTypePipe;
-	} else if (goalRect.intersectsRect(spriteBoundingBox)) {
+	} else if (goalRect.intersectsRect(ballBoundingBox)) {
 		type = CollisionTypeGoal;
 		this->runAnimation();
 	}
