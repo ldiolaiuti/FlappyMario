@@ -16,10 +16,8 @@
 		1AC6FB2F180E99EB004C840B /* libchipmunk iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AC6FB0B180E9839004C840B /* libchipmunk iOS.a */; };
 		1AC6FB30180E99EB004C840B /* libcocos2dx iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AC6FB07180E9839004C840B /* libcocos2dx iOS.a */; };
 		1AC6FB31180E99EB004C840B /* libcocos2dx-extensions iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AC6FB09180E9839004C840B /* libcocos2dx-extensions iOS.a */; };
-		1AC6FB32180E99EB004C840B /* libCocosDenshion iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AC6FB0F180E9839004C840B /* libCocosDenshion iOS.a */; };
 		1AFAF8B716D35DE700DB1158 /* AppDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AFAF8B316D35DE700DB1158 /* AppDelegate.cpp */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
-		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		222355BB19585F8300C77E46 /* AppIcon29x29.png in Resources */ = {isa = PBXBuildFile; fileRef = 222355A819585F8300C77E46 /* AppIcon29x29.png */; };
 		222355BC19585F8300C77E46 /* AppIcon29x29@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 222355A919585F8300C77E46 /* AppIcon29x29@2x.png */; };
 		222355BD19585F8300C77E46 /* AppIcon40x40.png in Resources */ = {isa = PBXBuildFile; fileRef = 222355AA19585F8300C77E46 /* AppIcon40x40.png */; };
@@ -57,6 +55,11 @@
 		22235617195885D000C77E46 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22235616195885D000C77E46 /* MediaPlayer.framework */; };
 		225D63D119581B5C0010CF1F /* font in Resources */ = {isa = PBXBuildFile; fileRef = 225D63D019581B5C0010CF1F /* font */; };
 		225D63D519581B660010CF1F /* LogoBalzo_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 225D63D419581B660010CF1F /* LogoBalzo_white.png */; };
+		2286156F19E192100042B8DA /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2286156E19E192100042B8DA /* OpenGLES.framework */; };
+		2286157319E1921C0042B8DA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2286157219E1921C0042B8DA /* UIKit.framework */; };
+		2286157519E192270042B8DA /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2286157419E192260042B8DA /* CoreMotion.framework */; };
+		2286157619E192350042B8DA /* libCocosDenshion Mac.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AC6FB01180E9839004C840B /* libCocosDenshion Mac.a */; };
+		2286157719E192450042B8DA /* libCocosDenshion iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AC6FB0F180E9839004C840B /* libCocosDenshion iOS.a */; };
 		22AFA9021965606C0067A00D /* CHANGELOG.md in Resources */ = {isa = PBXBuildFile; fileRef = 22AFA8FE1965606C0067A00D /* CHANGELOG.md */; };
 		22AFA9031965606C0067A00D /* ChartboostX_ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 22AFA9001965606C0067A00D /* ChartboostX_ios.mm */; };
 		22AFA9041965606C0067A00D /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 22AFA9011965606C0067A00D /* README.md */; };
@@ -108,13 +111,11 @@
 		5087E76B17EB910900C73F5D /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D44C620F132DFF4E0009C878 /* AudioToolbox.framework */; };
 		5087E78917EB974C00C73F5D /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5087E78817EB974C00C73F5D /* AppKit.framework */; };
 		5087E78B17EB975400C73F5D /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5087E78A17EB975400C73F5D /* OpenGL.framework */; };
-		BF171245129291EC00B8313A /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB012928DE900B8313A /* OpenGLES.framework */; };
 		BF1712471292920000B8313A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB412928DE900B8313A /* libz.dylib */; };
 		BF1C47F01293687400B63C5D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF1C47EA1293683800B63C5D /* QuartzCore.framework */; };
 		D44C620C132DFF330009C878 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D44C620B132DFF330009C878 /* OpenAL.framework */; };
 		D44C620E132DFF430009C878 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D44C620D132DFF430009C878 /* AVFoundation.framework */; };
 		D44C6210132DFF4E0009C878 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D44C620F132DFF4E0009C878 /* AudioToolbox.framework */; };
-		D6B0611B1803AB670077942B /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6B0611A1803AB670077942B /* CoreMotion.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -323,6 +324,9 @@
 		22235616195885D000C77E46 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.1.sdk/System/Library/Frameworks/MediaPlayer.framework; sourceTree = DEVELOPER_DIR; };
 		225D63D019581B5C0010CF1F /* font */ = {isa = PBXFileReference; lastKnownFileType = folder; path = font; sourceTree = "<group>"; };
 		225D63D419581B660010CF1F /* LogoBalzo_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LogoBalzo_white.png; sourceTree = "<group>"; };
+		2286156E19E192100042B8DA /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.0.sdk/System/Library/Frameworks/OpenGLES.framework; sourceTree = DEVELOPER_DIR; };
+		2286157219E1921C0042B8DA /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.0.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		2286157419E192260042B8DA /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.0.sdk/System/Library/Frameworks/CoreMotion.framework; sourceTree = DEVELOPER_DIR; };
 		22AFA8F81965606C0067A00D /* CBAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBAnalytics.h; sourceTree = "<group>"; };
 		22AFA8F91965606C0067A00D /* CBMoreAppsButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBMoreAppsButton.h; sourceTree = "<group>"; };
 		22AFA8FA1965606C0067A00D /* CBNewsfeed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBNewsfeed.h; sourceTree = "<group>"; };
@@ -408,6 +412,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2286157719E192450042B8DA /* libCocosDenshion iOS.a in Frameworks */,
+				2286157619E192350042B8DA /* libCocosDenshion Mac.a in Frameworks */,
+				2286157519E192270042B8DA /* CoreMotion.framework in Frameworks */,
+				2286157319E1921C0042B8DA /* UIKit.framework in Frameworks */,
+				2286156F19E192100042B8DA /* OpenGLES.framework in Frameworks */,
 				22AFA90A196560A30067A00D /* AVFoundation.framework in Frameworks */,
 				22AFA9081965609E0067A00D /* CoreData.framework in Frameworks */,
 				22AFA906196560980067A00D /* CoreMedia.framework in Frameworks */,
@@ -424,13 +433,9 @@
 				1AC6FB2F180E99EB004C840B /* libchipmunk iOS.a in Frameworks */,
 				1AC6FB30180E99EB004C840B /* libcocos2dx iOS.a in Frameworks */,
 				1AC6FB31180E99EB004C840B /* libcocos2dx-extensions iOS.a in Frameworks */,
-				1AC6FB32180E99EB004C840B /* libCocosDenshion iOS.a in Frameworks */,
-				D6B0611B1803AB670077942B /* CoreMotion.framework in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
-				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				222355F01958720700C77E46 /* libChartboost.a in Frameworks */,
 				288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */,
-				BF171245129291EC00B8313A /* OpenGLES.framework in Frameworks */,
 				2223560A1958813A00C77E46 /* libGoogleAdMobAds.a in Frameworks */,
 				BF1712471292920000B8313A /* libz.dylib in Frameworks */,
 				BF1C47F01293687400B63C5D /* QuartzCore.framework in Frameworks */,
@@ -673,6 +678,9 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2286157419E192260042B8DA /* CoreMotion.framework */,
+				2286157219E1921C0042B8DA /* UIKit.framework */,
+				2286156E19E192100042B8DA /* OpenGLES.framework */,
 				22AFA909196560A30067A00D /* AVFoundation.framework */,
 				22AFA9071965609E0067A00D /* CoreData.framework */,
 				22AFA905196560980067A00D /* CoreMedia.framework */,
